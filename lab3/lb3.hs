@@ -6,51 +6,51 @@
 
 -- Мета: Набути досвiду визначення та використання функцiй вищого порядку.
 
--- Завдання 1. Визначити частоту кожного елемента списку, 
--- напр.: "aaabbcaadddd"⇒[(’a’,5), (’b’,2), (’c’,1), (’d’,4)].
+-- Завдання 1. Визначте вказанi функцiї в кожному з завдань: 
+-- а) без застосування, 
+-- б) з застосуванням вбудованих функцiй.
+-- Видалити повтори елементiв списку (список - множина), 
+-- напр.: [1,1,1,5,5,3,1,1,222,222,222,222] ⇒ [1,5,3,222].
 
-fun :: (Eq a) =>  [a] -> [(a, Int)]
-fun []  = []
-fun [x] = [(x, 1)]
-fun (x:xs) = (x, count (x:xs) x): fun (deleteDup xs x) 
+-- а)
+delDuplicate1 :: [Int] -> [Int]
+delDuplicate1 [] = []
+delDuplicate1 (x:xs) = x : delDuplicate1 (remove x xs)
+        where
+            remove :: Int -> [Int] -> [Int]
+            remove x [] = []
+            remove x (y:ys) | x == y = remove x ys
+                            | otherwise = y : remove x ys
+
+-- б)
+delDuplicate2 :: [Int] -> [Int]
+delDuplicate2 [] = []
+delDuplicate2 (x:xs)   | isElem x xs   = delDuplicate2 xs
+                       | otherwise     = x : delDuplicate2 xs 
+            where 
+                isElem :: Int -> [Int] -> Bool
+                isElem y ys | y `elem` ys = True 
+                            | otherwise = False                     
+
+-- Завдання 2. Визначте вказанi функцiї в кожному з завдань: 
+-- а) без застосування, 
+-- б) з застосуванням вбудованих функцiй.
+-- Знайти найменше спiльне кратне двох чисел.
+
+-- а)
+lcm1 :: Int -> Int -> Int
+lcm1 x y = find x y
   where 
-  count :: (Eq a) => [a] -> a -> Int 
-  count [] _ = 0
-  count (x:xs) a 
-    |x == a = 1 + count xs a 
-    |otherwise = count xs a 
-  deleteDup :: (Eq a) => [a] -> a -> [a]
-  deleteDup [] _ = [] 
-  deleteDup (x:xs) a
-    |x == a = deleteDup xs a
-    |otherwise = x : deleteDup xs a 
+      find :: Int -> Int -> Int
+      find i j | i == j = i
+               | i < j = find (i+x) j
+               | i > j = find i (j+y)
 
-
-
--- Завдання 2. Знайти простi дiльники числа.
-
-divisors :: Int-> [Int]
-divisors k = onlyPrime (divisors' 2 k)
-  where
-    divisors' n k 
-     | n*n > k = [k]
-     | n*n == k = [n, k]
-     | k `mod` n == 0 = (n:(k `div` n):result)
-     | otherwise = result
-      where result = divisors' (n+1) k
-    
-    onlyPrime :: [Int] -> [Int]
-    onlyPrime [] = []
-    onlyPrime (x:xs) 
-      | is_prime x = x : onlyPrime (xs)
-      | otherwise = onlyPrime xs
-
-    is_prime :: Int -> Bool
-    is_prime 1 = False
-    is_prime 2 = True
-    is_prime n 
-      | (length [x | x <- [2 .. n-1], mod n x == 0]) > 0 = False
-      | otherwise = True
-
+-- б)
+lcm2 :: Int -> Int -> Int
+lcm2 x y =  find x y
+   where
+       find :: Int -> Int -> Int
+       find a b = abs ((x `quot` (gcd x y)) * y)
 
 -- Висновок: В ході виконання лабораторної роботи, я набув досвiду визначення та використання функцiй вищого порядку.
